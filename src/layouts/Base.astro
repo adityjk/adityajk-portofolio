@@ -1,0 +1,72 @@
+---
+import "../styles/tokens.css";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+
+    <style>
+      /* Self-hosted variable fonts as offline fallback. The Google Fonts
+			   <link> below comes after this block, so the CDN wins when it is
+			   reachable and the local .otf is used otherwise. */
+      @font-face {
+        font-family: "Fraunces";
+        src: url("/fonts/Fraunces-Variable.otf") format("opentype");
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Space Grotesk";
+        src: url("/fonts/SpaceGrotesk-Variable.otf") format("opentype");
+        font-style: normal;
+        font-weight: 300 700;
+        font-display: swap;
+      }
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Space+Grotesk:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+
+    <script is:inline>
+      // Set the theme before first paint to avoid flashing the wrong mode.
+      const stored = localStorage.getItem("theme");
+      if (
+        stored === "dark" ||
+        (!stored && matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.dataset.theme = "dark";
+      } else {
+        document.documentElement.dataset.theme = "light";
+      }
+
+      // Marks JS as enabled so CSS can hide hero lines for the load stagger
+      // without hiding them permanently when JS is off.
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

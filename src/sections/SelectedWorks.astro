@@ -1,0 +1,252 @@
+---
+import { works } from "@/data/works";
+
+const formatNumber = (n: number) => String(n).padStart(2, "0") + ".";
+---
+
+<section class="works">
+	<div class="works__container">
+		<h2 class="works__label" data-reveal>Selected Works</h2>
+		<ul class="works__list" data-reveal>
+			{
+				works.map((work) => (
+					<li class="works__item">
+						<a
+							class="works__link"
+							href={work.link}
+							target="_blank"
+							rel="noopener noreferrer"
+							data-image={work.image}
+						>
+							<span class="works__num">{formatNumber(work.number)}</span>
+							<div class="works__body">
+								<h3 class="works__title">{work.title}</h3>
+								<p class="works__desc">{work.description}</p>
+								{work.role && <p class="works__role">{work.role}</p>}
+							</div>
+							<span class="works__year">{work.year}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+	<div class="works__preview" data-preview aria-hidden="true">
+		<img src="" alt="" />
+	</div>
+</section>
+
+<style>
+	.works {
+		padding-block: var(--space-section);
+	}
+
+	.works__container {
+		max-width: var(--container-max);
+		margin-inline: auto;
+		padding-inline: var(--container-pad);
+	}
+
+	.works__label {
+		margin-bottom: var(--space-6);
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+
+	.works__list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.works__link {
+		display: grid;
+		grid-template-columns: var(--space-6) 1fr auto;
+		grid-template-areas: "num body year";
+		column-gap: var(--space-5);
+		align-items: center;
+		margin-inline: calc(-1 * var(--container-pad));
+		padding: var(--space-4) var(--container-pad);
+		color: var(--color-text);
+		text-decoration: none;
+		transition: background-color var(--dur-base) ease;
+	}
+
+	.works__link:hover,
+	.works__link:focus-visible {
+		background-color: var(--color-wash);
+	}
+
+	.works__link:focus-visible {
+		outline: var(--line-thickness) solid var(--color-accent);
+		outline-offset: calc(-1 * var(--line-thickness));
+	}
+
+	.works__num {
+		grid-area: num;
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		color: var(--color-muted);
+		transition: color var(--dur-base) ease;
+	}
+
+	.works__link:hover .works__num,
+	.works__link:focus-visible .works__num {
+		color: var(--color-accent);
+	}
+
+	.works__body {
+		grid-area: body;
+	}
+
+	.works__title {
+		position: relative;
+		font-size: var(--text-2xl);
+		font-weight: 500;
+	}
+
+	.works__title::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		bottom: -0.1em;
+		width: 100%;
+		height: var(--line-thickness);
+		background-color: var(--color-accent);
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform var(--dur-base) ease;
+	}
+
+	.works__link:hover .works__title::after,
+	.works__link:focus-visible .works__title::after {
+		transform: scaleX(1);
+	}
+
+	.works__desc {
+		margin-top: var(--space-2);
+		font-size: var(--text-meta);
+	}
+
+	.works__role {
+		margin-top: var(--space-1);
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		color: var(--color-muted);
+	}
+
+	.works__year {
+		grid-area: year;
+		justify-self: end;
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		color: var(--color-muted);
+	}
+
+	/* Hover preview: sits fixed on the right side of the viewport, aligned to
+	   the container edge, fading in over the row when it's hovered. */
+	.works__preview {
+		position: fixed;
+		top: 50%;
+		right: max(var(--container-pad), calc((100vw - var(--container-max)) / 2));
+		width: var(--preview-size);
+		aspect-ratio: 16 / 10;
+		z-index: var(--z-preview);
+		overflow: hidden;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transition:
+			opacity var(--dur-base) ease,
+			visibility var(--dur-base) ease;
+	}
+
+	.works__preview.is-visible {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.works__preview img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (max-width: 768px) {
+		.works__link {
+			grid-template-columns: auto 1fr;
+			grid-template-areas:
+				"num year"
+				"body body";
+			row-gap: var(--space-2);
+			align-items: start;
+		}
+
+		.works__num {
+			align-self: center;
+		}
+	}
+
+	html.js .works [data-reveal] {
+		opacity: 0;
+		transform: translateY(var(--rise-y));
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html.js .works [data-reveal] {
+			opacity: 1;
+			transform: none;
+		}
+	}
+</style>
+
+<script>
+	import { animate, inView, stagger } from "motion";
+
+	// Reveal on scroll — one calm fade+rise per section, DESIGN.md §5.
+	if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		const section = document.querySelector(".works");
+		const targets = [...(section?.querySelectorAll("[data-reveal]") ?? [])];
+
+		if (section && targets.length) {
+			let fired = false;
+			inView(
+				section,
+				() => {
+					if (fired) return;
+					fired = true;
+					animate(
+						targets,
+						{ opacity: [0, 1], y: [10, 0] },
+						{ duration: 0.6, ease: [0, 0, 0.2, 1], delay: stagger(0.1) },
+					);
+				},
+				{ amount: 0.25 },
+			);
+		}
+	}
+
+	// Hover preview: show the hovered work's image on the side, desktop only.
+	if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+		const section = document.querySelector(".works");
+		const preview = section?.querySelector("[data-preview]");
+		const previewImg = preview?.querySelector("img");
+
+		if (preview && previewImg) {
+			document.querySelectorAll("[data-image]").forEach((item) => {
+				item.addEventListener("pointerenter", () => {
+					const src = item.getAttribute("data-image");
+					if (!src) return;
+					previewImg.src = src;
+					preview.classList.add("is-visible");
+				});
+				item.addEventListener("pointerleave", () => {
+					preview.classList.remove("is-visible");
+				});
+			});
+		}
+	}
+</script>

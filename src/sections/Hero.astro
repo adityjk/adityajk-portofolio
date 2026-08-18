@@ -1,0 +1,104 @@
+---
+const name = "Aditya Jauhari Khazindar";
+const position = "Independent Web Developer, WordPress Dev";
+---
+
+<section class="hero">
+	<div class="hero__inner">
+		<h1 class="hero__line hero__name">{name}</h1>
+		<p class="hero__line hero__position">{position}</p>
+		<p class="hero__line hero__meta">
+			<span data-hero-date></span>
+			<span aria-hidden="true"> — </span>
+			<span data-hero-time></span>
+		</p>
+	</div>
+</section>
+
+<style>
+	.hero {
+		min-height: 100svh;
+		display: flex;
+		align-items: center;
+		padding: var(--space-8) var(--container-pad);
+	}
+
+	.hero__inner {
+		width: 100%;
+		max-width: var(--container-max);
+		margin-inline: auto;
+	}
+
+	.hero__name {
+		font-size: var(--text-hero);
+		font-weight: 600;
+	}
+
+	.hero__position {
+		margin-top: var(--space-4);
+		font-size: var(--text-xl);
+		font-weight: 300;
+	}
+
+	.hero__meta {
+		margin-top: var(--space-8);
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+
+	html.js .hero__line {
+		opacity: 0;
+		transform: translateY(var(--rise-y));
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html.js .hero__line {
+			opacity: 1;
+			transform: none;
+		}
+	}
+</style>
+
+<script>
+	import { animate, stagger } from "motion";
+
+	// 0.18s stagger between lines, calm ease-out — mirrors DESIGN.md §5.
+	if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		animate(
+			[...document.querySelectorAll(".hero__line")],
+			{ opacity: [0, 1], y: [10, 0] },
+			{ duration: 0.7, ease: [0, 0, 0.2, 1], delay: stagger(0.18) },
+		);
+	}
+</script>
+
+<script>
+	const dateEl = document.querySelector("[data-hero-date]");
+	const timeEl = document.querySelector("[data-hero-time]");
+
+	const dateFormat = new Intl.DateTimeFormat(undefined, {
+		weekday: "long",
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	});
+	const timeFormat = new Intl.DateTimeFormat(undefined, {
+		hour: "2-digit",
+		minute: "2-digit",
+		second: "2-digit",
+		hour12: false,
+		timeZoneName: "short",
+	});
+
+	const render = () => {
+		const now = new Date();
+		dateEl!.textContent = dateFormat.format(now);
+		timeEl!.textContent = timeFormat.format(now);
+	};
+
+	render();
+	setInterval(render, 1000);
+</script>

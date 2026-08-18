@@ -1,0 +1,277 @@
+---
+const statements = [
+	"I'm an independent web developer, building sites that are fast, considered, and built to last.",
+	"My focus splits two ways: custom-built websites, and WordPress for clients who need something they can manage themselves.",
+	"Every project starts with the same question: what does this site actually need to say — and how little can I build to say it well.",
+	"Based in Semarang City, working with clients wherever they are.",
+];
+
+const count = statements.length;
+const pad = (n: number) => String(n).padStart(2, "0");
+---
+
+<section class="about">
+		<div class="about__viewport">
+			<div class="about__chrome">
+				<span class="about__label">About</span>
+				<span class="about__counter" data-counter>
+					{pad(1)} / {pad(count)}
+				</span>
+			</div>
+			<div class="about__photo">
+				<img
+					src="/images/profile-placeholder.svg"
+					alt="Portrait of Aditya Jauhari Khazindar"
+					width="800"
+					height="800"
+					loading="lazy"
+				/>
+				<img
+					src="/images/profile-placeholder-2.svg"
+					alt=""
+					aria-hidden="true"
+					width="800"
+					height="800"
+					loading="lazy"
+				/>
+			</div>
+			<div class="about__lines">
+			{
+				statements.map((statement) => (
+					<div class="about__line" data-line>
+						<p class="about__text">{statement}</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	/* Fallback / no-JS / reduced-motion: statements flow as normal paragraphs. */
+	.about {
+		padding-block: var(--space-section);
+		max-width: var(--container-max);
+		margin-inline: auto;
+		padding-inline: var(--container-pad);
+	}
+
+	.about__chrome {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: var(--space-6);
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+
+	.about__counter {
+		display: none;
+	}
+
+	.about__photo {
+		position: relative;
+		width: var(--photo-size);
+		margin-bottom: var(--space-6);
+		aspect-ratio: 1 / 1;
+	}
+
+	.about__photo img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: opacity var(--dur-base) ease;
+	}
+
+	.about__photo img + img {
+		opacity: 0;
+	}
+
+	.about__photo:hover img {
+		opacity: 0;
+	}
+
+	.about__photo:hover img + img {
+		opacity: 1;
+	}
+
+	.about__line + .about__line {
+		margin-top: var(--space-5);
+	}
+
+	.about__text {
+		max-width: var(--measure);
+		font-size: var(--text-2xl);
+		font-weight: 300;
+	}
+
+	/* Pinned scroll: one statement per viewport-height of scroll, crossfading. */
+	html.js .about {
+		height: 400vh;
+		padding: 0;
+		max-width: none;
+		margin-inline: 0;
+	}
+
+	html.js .about__viewport {
+		position: sticky;
+		top: 0;
+		height: 100svh;
+		overflow: hidden;
+	}
+
+	html.js .about__chrome {
+		position: absolute;
+		top: var(--space-6);
+		left: 0;
+		right: 0;
+		z-index: 1;
+		max-width: var(--container-max);
+		margin-inline: auto;
+		margin-bottom: 0;
+		padding-inline: var(--container-pad);
+	}
+
+	html.js .about__counter {
+		display: inline;
+	}
+
+	html.js .about__photo {
+		position: absolute;
+		top: 50%;
+		right: max(var(--container-pad), calc((100vw - var(--container-max)) / 2));
+		transform: translateY(-50%);
+		margin-bottom: 0;
+	}
+
+	html.js .about__lines {
+		height: 100%;
+	}
+
+	html.js .about__line {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-right: calc(var(--photo-size) + var(--space-6));
+		will-change: opacity, transform;
+	}
+
+	html.js .about__text {
+		width: 100%;
+		max-width: var(--measure);
+		padding-inline: var(--container-pad);
+	}
+
+	@media (max-width: 768px) {
+		html.js .about__photo {
+			top: var(--space-8);
+			right: var(--container-pad);
+			transform: none;
+			width: clamp(7rem, 22vw, 10rem);
+		}
+
+		html.js .about__line {
+			padding-right: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html.js .about {
+			height: auto;
+			padding-block: var(--space-section);
+			max-width: var(--container-max);
+			margin-inline: auto;
+			padding-inline: var(--container-pad);
+		}
+
+		html.js .about__viewport {
+			position: static;
+			height: auto;
+			overflow: visible;
+		}
+
+		html.js .about__chrome {
+			position: static;
+			margin-bottom: var(--space-6);
+			padding-inline: 0;
+		}
+
+		html.js .about__counter {
+			display: none;
+		}
+
+		html.js .about__photo {
+			position: relative;
+			top: auto;
+			right: auto;
+			width: var(--photo-size);
+			transform: none;
+			margin-bottom: var(--space-6);
+		}
+
+		html.js .about__lines {
+			height: auto;
+		}
+
+		html.js .about__line {
+			position: static;
+			display: block;
+			align-items: unset;
+			justify-content: unset;
+		}
+
+		html.js .about__text {
+			width: auto;
+			padding-inline: 0;
+		}
+	}
+</style>
+
+<script>
+	import { scroll } from "motion";
+
+	// Scroll-linked crossfade: each statement fades in/up as its 100vh window
+	// passes through the pinned viewport. Disabled under reduced motion.
+	if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		const section = document.querySelector(".about");
+		const lines = [...(section?.querySelectorAll<HTMLElement>("[data-line]") ?? [])];
+		const counter = document.querySelector("[data-counter]");
+
+		if (section && lines.length && counter) {
+			const count = lines.length;
+			const pad = (n: number) => String(n).padStart(2, "0");
+			const FADE = 0.2;
+
+			const setLine = (index: number, k: number) => {
+				const a = k - index;
+				const opacity = Math.max(0, Math.min(1, a / FADE, (1 - a) / FADE));
+				const y =
+					(Math.max(0, FADE - a) / FADE) * 10 -
+					(Math.max(0, a - (1 - FADE)) / FADE) * 10;
+				lines[index].style.opacity = String(opacity);
+				lines[index].style.transform = `translateY(${y}px)`;
+			};
+
+			let lastActive = -1;
+			const update = (p: number) => {
+				const k = p * count;
+				lines.forEach((_, index) => setLine(index, k));
+				const active = Math.max(0, Math.min(count - 1, Math.round(k)));
+				if (active !== lastActive) {
+					counter.textContent = `${pad(active + 1)} / ${pad(count)}`;
+					lastActive = active;
+				}
+			};
+
+			update(0);
+			scroll(update, { target: section, offset: ["start start", "end end"] });
+		}
+	}
+</script>

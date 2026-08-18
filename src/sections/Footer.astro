@@ -1,0 +1,161 @@
+---
+const contact = {
+	heading: "Let's work together.",
+	email: "hello@adityajk.com",
+	copyright: "© 2026 Aditya Jauhari Khazindar",
+};
+
+const socials = [
+	{ name: "GitHub", url: "https://github.com/adityajk" },
+	{ name: "LinkedIn", url: "https://linkedin.com/in/adityajk" },
+];
+---
+
+<footer class="footer">
+	<div class="footer__container">
+		<h2 class="footer__heading" data-reveal>{contact.heading}</h2>
+		<a class="footer__email" data-reveal href={`mailto:${contact.email}`}>
+			{contact.email}
+		</a>
+		<div class="footer__bottom" data-reveal>
+			<ul class="footer__socials">
+				{
+					socials.map((social) => (
+						<li>
+							<a href={social.url} target="_blank" rel="noopener noreferrer">
+								{social.name}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+			<p class="footer__meta">{contact.copyright}</p>
+		</div>
+	</div>
+</footer>
+
+<style>
+	.footer {
+		padding-block: var(--space-section);
+		border-top: 1px solid var(--color-wash);
+	}
+
+	.footer__container {
+		max-width: var(--container-max);
+		margin-inline: auto;
+		padding-inline: var(--container-pad);
+	}
+
+	.footer__heading {
+		max-width: var(--measure);
+		font-size: var(--text-2xl);
+		font-weight: 500;
+	}
+
+	.footer__email {
+		position: relative;
+		display: inline-block;
+		margin-top: var(--space-6);
+		font-size: var(--text-xl);
+		color: var(--color-text);
+		text-decoration: none;
+	}
+
+	.footer__email::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		bottom: -0.1em;
+		width: 100%;
+		height: var(--line-thickness);
+		background-color: var(--color-accent);
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform var(--dur-base) ease;
+	}
+
+	.footer__email:hover::after,
+	.footer__email:focus-visible::after {
+		transform: scaleX(1);
+	}
+
+	.footer__bottom {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-4);
+		align-items: center;
+		justify-content: space-between;
+		margin-top: var(--space-8);
+		padding-top: var(--space-5);
+		border-top: 1px solid var(--color-wash);
+	}
+
+	.footer__socials {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-5);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.footer__socials a {
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-muted);
+		text-decoration: none;
+		transition: color var(--dur-base) ease;
+	}
+
+	.footer__socials a:hover,
+	.footer__socials a:focus-visible {
+		color: var(--color-accent);
+	}
+
+	.footer__meta {
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		color: var(--color-muted);
+	}
+
+	html.js .footer [data-reveal] {
+		opacity: 0;
+		transform: translateY(var(--rise-y));
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html.js .footer [data-reveal] {
+			opacity: 1;
+			transform: none;
+		}
+	}
+</style>
+
+<script>
+	import { animate, inView, stagger } from "motion";
+
+	// Reveal on scroll — one calm fade+rise per section, DESIGN.md §5.
+	if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		const section = document.querySelector(".footer");
+		const targets = [...(section?.querySelectorAll("[data-reveal]") ?? [])];
+
+		if (section && targets.length) {
+			let fired = false;
+			inView(
+				section,
+				() => {
+					if (fired) return;
+					fired = true;
+					animate(
+						targets,
+						{ opacity: [0, 1], y: [10, 0] },
+						{ duration: 0.6, ease: [0, 0, 0.2, 1], delay: stagger(0.1) },
+					);
+				},
+				{ amount: 0.25 },
+			);
+		}
+	}
+</script>

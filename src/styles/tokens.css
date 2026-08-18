@@ -1,0 +1,85 @@
+/* ==========================================================================
+   Design tokens — single source of truth.
+   Values map to DESIGN.md §2 (palette), §3 (type), §4 (spacing), §5 (motion).
+   Keep in sync with DESIGN.md — never edit one without the other.
+   ========================================================================== */
+
+:root {
+  /* -------- palette (raw values, DESIGN.md §2) -------- */
+  --bone: #f6f3ee; /* warm off-white */
+  --coal: #15130f; /* warm near-black */
+  --ink: #1c1a15; /* primary text, light mode */
+  --paper: #ede9e0; /* primary text, dark mode */
+  --clay: #b5502e; /* accent — burnt terracotta/rust */
+  --warm-gray: #8a8574; /* muted warm gray */
+
+  /* -------- color — semantic (light default, DESIGN.md §2) -------- */
+  --color-bg: var(--bone);
+  --color-bg-dark: var(--coal);
+  --color-text: var(--ink);
+  --color-text-dark: var(--paper);
+	--color-accent: var(--clay);
+	--color-muted: var(--warm-gray);
+	--color-wash: color-mix(in srgb, var(--color-text) 5%, var(--color-bg)); /* work-list hover wash */
+
+  /* -------- typography (DESIGN.md §3) -------- */
+  --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-grotesk: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+
+  --text-label: 0.8125rem; /* mono/grotesk labels, meta, numbered prefixes */
+  --text-meta: 0.9375rem;
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); /* body 16 → 18px */
+  --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
+  --text-xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  --text-2xl: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  --text-hero: clamp(2.5rem, 1.5rem + 6vw, 4.75rem); /* hero name, fluid */
+
+  --leading-tight: 1.1;
+  --leading-body: 1.65;
+  --tracking-label: 0.12em; /* small uppercase labels */
+
+  /* -------- spacing — 8px base scale (DESIGN.md §4) -------- */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --space-section: clamp(5rem, 10vw, 8rem); /* generous section rhythm */
+
+  /* -------- layout -------- */
+  --container-max: 72rem;
+  --container-pad: clamp(1.25rem, 4vw, 3rem);
+  --measure: 62ch; /* editorial body copy measure */
+  --line-thickness: 2px; /* work-list hover underline */
+  --photo-size: clamp(10rem, 20vw, 18rem); /* pinned About portrait */
+  --preview-size: clamp(14rem, 22vw, 20rem); /* work-list hover preview */
+  --breakpoint: 768px;
+
+  /* -------- motion (DESIGN.md §5) -------- */
+  --dur-fast: 150ms;
+  --dur-base: 200ms;
+  --dur-slow: 300ms;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --rise-y: 10px; /* scroll-reveal translate, 8–12px band */
+
+  /* -------- z-index -------- */
+  --z-nav: 10;
+  --z-preview: 5;
+}
+
+/* -------- dark mode — explicit (theme toggle) -------- */
+:root[data-theme="dark"] {
+  --color-bg: var(--coal);
+  --color-text: var(--paper);
+}
+
+/* -------- dark mode — system preference, before JS sets an explicit theme -------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: var(--coal);
+    --color-text: var(--paper);
+  }
+}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <rect width="800" height="800" fill="#15130f"/>
+  <rect x="20" y="20" width="760" height="760" fill="none" stroke="#3a362c" stroke-width="2"/>
+  <g fill="#ede9e0" font-family="'Space Grotesk', sans-serif" text-anchor="middle">
+    <text x="400" y="382" font-size="28" letter-spacing="2">PROFILE PHOTO 2</text>
+    <text x="400" y="432" font-size="18" fill="#8a8574">hover-swap — replace with your .webp</text>
+  </g>
+</svg>
