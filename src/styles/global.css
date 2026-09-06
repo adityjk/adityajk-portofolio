@@ -49,6 +49,11 @@ img {
   height: auto;
 }
 
+section[id],
+footer[id] {
+  scroll-margin-top: 3.5rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

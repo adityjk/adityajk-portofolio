@@ -1,7 +1,9 @@
 ---
 import Base from "@/layouts/Base.astro";
+import Nav from "@/components/Nav.astro";
 import Hero from "@/sections/Hero.astro";
 import About from "@/sections/About.astro";
+import Pricing from "@/sections/Pricing.astro";
 import SelectedWorks from "@/sections/SelectedWorks.astro";
 import Footer from "@/sections/Footer.astro";
 
@@ -12,9 +14,11 @@ const description =
 ---
 
 <Base title={title} description={description}>
+  <Nav />
   <main>
     <Hero />
     <About />
+    <Pricing />
     <SelectedWorks />
   </main>
   <Footer />

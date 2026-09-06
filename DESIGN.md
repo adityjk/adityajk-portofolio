@@ -32,9 +32,10 @@
 1. Hero — name (large serif) + short positioning line + current local time/date (kept from reference, but styled in mono, muted)
 2. Client/collaborator logos — static row or subtle marquee (slower, less frantic than typical dev-portfolio marquees)
 3. About paragraph(s)
-4. Selected Works — numbered list (see below)
-5. Recognitions — simple stat list
-6. Contact / footer — email, social links
+4. Pricing — numbered list, same visual language as Selected Works (see section 6a below)
+5. Selected Works — numbered list (see below)
+6. Recognitions — simple stat list
+7. Contact / footer — sticky window reveal (see section 5 exception below): closing statement, rotating icon, email, social links
 
 - Single long scrolling page (no separate project pages for v1) — matches the reference's simplicity, keeps scope small.
 - Grid: 12-column desktop, single column mobile.
@@ -44,11 +45,14 @@
 ## 5. Motion & Interaction
 
 - Library: CSS + a light JS helper (e.g. Motion One or GSAP for the stagger/reveal only) — deliberately NOT WebGL/shaders. This is the second big departure from the reference: motion should feel calm and typographic, not technical/experimental.
+- Smooth scroll: **Lenis** (~4kb) layered globally underneath Motion One — controls scroll momentum/easing site-wide; Motion One still handles individual element animations. Falls back to native scroll for `prefers-reduced-motion`.
 - On load: short staggered fade+rise on hero text lines (150-200ms stagger, ease-out, no bounce).
-- On scroll: simple reveal-on-scroll (opacity + 8-12px translate) per section, no parallax, no sticky gimmicks.
+- On scroll: simple reveal-on-scroll (opacity + 8-12px translate) per section, no parallax, no sticky gimmicks — **except the two deliberate exceptions below.**
 - Work list hover: background wash fades in (200ms), accent underline draws left-to-right under the title, number prefix shifts color to accent.
 - Cursor: default system cursor (no custom cursor) — keeps things restrained rather than "designer flex."
 - Page transitions: none needed (single-page).
+- **Exception — About section**: pinned-scroll effect. Portrait image stays sticky in one column while 2-4 short statements crossfade in the adjacent column as the user scrolls through the section's extra scroll height.
+- **Exception — Footer/Contact section**: sticky window reveal. The panel (closing statement → rotating icon → email/social links) is visually fixed as a "window" while its taller inner content scrolls past within it (reference: cristinagomezruiz.com contact section). Behind the panel, a blurred background image/gradient shifts slowly (parallax) for depth. The rotating icon: a small abstract mark in the accent color (not a flower — propose 2-3 simple geometric options), rotating + rising ~10px tied to scroll progress within the section, sized larger/more prominent than a typical inline icon (it should read as a focal element, not a small decorative mark). Below the email/social links, add a **large closing wordmark** — the site owner's name ("Aditya Jauhari K.") set in the primary serif at a large fluid clamp size (roughly 15-20vw), filling the remaining vertical space so the panel doesn't feel sparse. Optional: a thin meta-info row at the top of the panel (role / location / nav links / theme toggle) in the mono face, colophon-style, similar in spirit to cristinagomezruiz.com's footer grid but in this site's own palette and type. Section needs extra scroll height (~200-250vh) to give the reveal room to play out. These two exceptions are the only places parallax/sticky techniques are used on the site — keep it that way, don't extend to other sections.
 
 ## 6. Content per Work Item
 
@@ -60,11 +64,28 @@
 - Year
 - (Drop the "Feat." press-mentions field from the reference unless you actually have press coverage to list — don't leave it as an empty placeholder.)
 
+## 6a. Content per Pricing Item
+
+- **Layout: horizontal 3-column row (triptych)**, deliberately different from Selected Works' vertical stacked list — since this is a short, fixed set of 3 items (not an open-ended list), horizontal comparison reads better and avoids feeling repetitive sitting right next to the Work list. Same typographic language (mono number prefix, serif service name) but different structural rhythm.
+- Number (01, 02, 03) — mono face, accent color, positioned above or beside the service name within its column
+- Service name (e.g. "Landing Page", "Full Website", "WordPress Site") — serif
+- Starting price, format "Starting from [FILL — currency + amount]" — never a flat/final price, always framed as a floor
+- Short description (1 sentence — what's included at the base tier)
+- No feature-comparison checklist, no "Most Popular" badges, no per-item CTA buttons — keep it text-forward; the whole section links down to Contact (columns are clickable → scroll to Contact), or a single small link/line below all 3 columns
+- Optional closing line below the row: "Final price depends on scope — let's talk." (or similar), small and muted, centered
+- On mobile: stacks to a single column (each pricing item becomes a vertical block, in order) — same collapse pattern as other multi-column content on this site
+
 ## 7. Responsive Behavior
 
 - Breakpoint: single breakpoint at 768px is enough for a page this simple.
 - Mobile: logos row becomes horizontal scroll-snap; work list rows stack with number+year on one line, title below.
-- Nav: no hamburger needed — single scroll with a small fixed corner element (e.g. dark/light toggle + email) is enough, matches the minimal single-page structure.
+- Nav: **fixed top meta-bar**, 4 columns (reference: cristinagomezruiz.com header), same structural language as the footer colophon row for consistency:
+  1. Name + role ("Aditya Jauhari K." / "Web Developer, WordPress Dev")
+  2. Location + live local time ("Semarang, Indonesia (HH:MM AM/PM)")
+  3. Section nav links (Home, About, Work, Pricing, Contact — anchor links, current section bold/active state)
+  4. Theme toggle (Light / Dark)
+  - Mono/grotesk face, small size, uppercase labels + bold value — matches the footer colophon typography treatment exactly.
+  - On mobile: collapses to a simpler single row (name + theme toggle only, or a condensed version) — full 4-column layout doesn't fit under 768px.
 
 ## 8. Assets
 

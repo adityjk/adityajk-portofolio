@@ -1,0 +1,218 @@
+---
+import ThemeToggle from "@/components/ThemeToggle.astro";
+
+const links = [
+	{ label: "Home", href: "#home" },
+	{ label: "About", href: "#about" },
+	{ label: "Pricing", href: "#pricing" },
+	{ label: "Work", href: "#work" },
+	{ label: "Contact", href: "#contact" },
+];
+---
+
+<nav class="nav" data-nav>
+	<div class="nav__inner">
+		<div class="nav__col nav__identity">
+			<span class="nav__name">Aditya Jauhari K.</span>
+			<span class="nav__role">Web Developer, WordPress Dev</span>
+		</div>
+
+		<div class="nav__col nav__location">
+			<span class="nav__label">Location</span>
+			<span class="nav__value">Semarang, Indonesia <span class="nav__time" data-nav-time></span></span>
+		</div>
+
+		<div class="nav__col nav__links">
+			<span class="nav__label">Navigation</span>
+			<div class="nav__linkrow">
+				{links.map((link) => (
+					<a class="nav__link" href={link.href} data-nav-link={link.href.slice(1)}>
+						{link.label}
+					</a>
+				))}
+			</div>
+		</div>
+
+		<div class="nav__col nav__theme">
+			<span class="nav__label">Theme</span>
+			<ThemeToggle />
+		</div>
+	</div>
+</nav>
+
+<style>
+	.nav {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: var(--z-nav);
+		background-color: var(--nav-bg);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+	}
+
+	.nav__inner {
+		display: grid;
+		grid-template-columns: auto auto 1fr auto;
+		gap: var(--space-4);
+		align-items: start;
+		padding-block: var(--space-2);
+		padding-inline: var(--container-pad);
+	}
+
+	.nav__col {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+	}
+
+	.nav__label {
+		font-family: var(--font-grotesk);
+		font-size: 0.6875rem;
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-muted);
+		line-height: 1.4;
+	}
+
+	.nav__name {
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-text);
+		font-weight: 600;
+		white-space: nowrap;
+		line-height: 1.4;
+	}
+
+	.nav__role {
+		font-family: var(--font-grotesk);
+		font-size: 0.6875rem;
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-muted);
+		white-space: nowrap;
+		line-height: 1.4;
+	}
+
+	.nav__value {
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-text);
+		font-weight: 600;
+		white-space: nowrap;
+		line-height: 1.4;
+	}
+
+	.nav__time {
+		font-weight: 400;
+		color: var(--color-muted);
+	}
+
+	.nav__linkrow {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-1) var(--space-3);
+	}
+
+	.nav__link {
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-muted);
+		text-decoration: none;
+		transition: color var(--dur-base) ease;
+		white-space: nowrap;
+		line-height: 1.4;
+	}
+
+	.nav__link:hover,
+	.nav__link:focus-visible {
+		color: var(--color-accent);
+	}
+
+	.nav__link.active {
+		color: var(--color-accent);
+		font-weight: 600;
+	}
+
+	.nav__theme {
+		align-items: flex-end;
+	}
+
+	/* ---- Mobile: collapse to name + theme toggle ---- */
+	@media (max-width: 768px) {
+		.nav__inner {
+			grid-template-columns: 1fr auto;
+		}
+
+		.nav__location,
+		.nav__links {
+			display: none;
+		}
+
+		.nav__identity {
+			min-width: 0;
+		}
+
+		.nav__role {
+			display: none;
+		}
+	}
+</style>
+
+<script>
+	// ---- IntersectionObserver: track active section ----
+	const sections = document.querySelectorAll("section[id], footer[id]");
+	const navLinks = document.querySelectorAll<HTMLElement>("[data-nav-link]");
+
+	if (sections.length && navLinks.length) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						const id = entry.target.id;
+						navLinks.forEach((link) => {
+							link.classList.toggle(
+								"active",
+								link.dataset.navLink === id,
+							);
+						});
+					}
+				});
+			},
+			{ rootMargin: "-20% 0px -70% 0px" },
+		);
+
+		sections.forEach((section) => observer.observe(section));
+	}
+
+	// ---- Live time: sync to real-minute boundaries ----
+	const timeEl = document.querySelector("[data-nav-time]");
+	if (timeEl) {
+		const fmt = new Intl.DateTimeFormat(undefined, {
+			hour: "2-digit",
+			minute: "2-digit",
+			hour12: true,
+		});
+
+		const render = () => {
+			timeEl.textContent = `(${fmt.format(new Date())})`;
+		};
+
+		render();
+
+		// Align first tick to the next :00 seconds so updates feel instant at minute change.
+		const msToNextMinute = 60_000 - (Date.now() % 60_000);
+		setTimeout(() => {
+			render();
+			setInterval(render, 60_000);
+		}, msToNextMinute);
+	}
+</script>

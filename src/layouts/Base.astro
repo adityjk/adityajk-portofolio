@@ -68,5 +68,22 @@ const { title, description } = Astro.props;
   </head>
   <body>
     <slot />
+    <script>
+      import Lenis from "lenis";
+
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const lenis = new Lenis({
+          lerp: 0.1,
+          syncTouch: true,
+        });
+
+        function raf(time: number) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+      }
+    </script>
   </body>
 </html>

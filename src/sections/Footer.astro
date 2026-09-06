@@ -1,4 +1,6 @@
 ---
+import ThemeToggle from "@/components/ThemeToggle.astro";
+
 const contact = {
 	heading: "Let's work together.",
 	email: "hello@adityajk.com",
@@ -11,51 +13,173 @@ const socials = [
 ];
 ---
 
-<footer class="footer">
-	<div class="footer__container">
-		<h2 class="footer__heading" data-reveal>{contact.heading}</h2>
-		<a class="footer__email" data-reveal href={`mailto:${contact.email}`}>
-			{contact.email}
-		</a>
-		<div class="footer__bottom" data-reveal>
-			<ul class="footer__socials">
-				{
-					socials.map((social) => (
-						<li>
-							<a href={social.url} target="_blank" rel="noopener noreferrer">
-								{social.name}
-							</a>
-						</li>
-					))
-				}
-			</ul>
-			<p class="footer__meta">{contact.copyright}</p>
+<footer class="footer" id="contact">
+	<div class="footer__bg" aria-hidden="true"></div>
+	<div class="footer__panel">
+		<div class="footer__content">
+			<div class="footer__colophon">
+				<span>Web Developer, WordPress Dev</span>
+				<span>Semarang, Indonesia</span>
+				<span class="footer__colophon-links">
+					{socials.map((s) => (
+						<a href={s.url} target="_blank" rel="noopener noreferrer">{s.name}</a>
+					))}
+				</span>
+			</div>
+
+			<h2 class="footer__heading">{contact.heading}</h2>
+
+			<div class="footer__icon" aria-hidden="true">
+				<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.25">
+					<rect x="8" y="8" width="16" height="16" transform="rotate(45 16 16)" />
+				</svg>
+			</div>
+
+			<div class="footer__contact">
+				<a class="footer__email" href={`mailto:${contact.email}`}>
+					{contact.email}
+				</a>
+				<div class="footer__bottom">
+					<ul class="footer__socials">
+						{
+							socials.map((social) => (
+								<li>
+									<a href={social.url} target="_blank" rel="noopener noreferrer">
+										{social.name}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</div>
+
+			<p class="footer__wordmark" data-wordmark>Aditya Jauhari K.</p>
+			<p class="footer__closing">{contact.copyright}</p>
 		</div>
 	</div>
+	<ThemeToggle class="footer__toggle" />
 </footer>
 
 <style>
+	/* ---------- section: height set dynamically by JS for sticky reveal ---------- */
 	.footer {
-		padding-block: var(--space-section);
-		border-top: 1px solid var(--color-wash);
+		position: relative;
 	}
 
-	.footer__container {
-		max-width: var(--container-max);
-		margin-inline: auto;
+	/* ---------- blurred background layer (parallax, behind panel) ---------- */
+	.footer__bg {
+		position: absolute;
+		inset: -10% 0;
+		background:
+			radial-gradient(
+				ellipse 60% 50% at 50% 60%,
+				color-mix(in srgb, var(--color-accent) 12%, transparent),
+				transparent
+			);
+		filter: blur(60px);
+		will-change: transform;
+	}
+
+	/* ---------- sticky window panel ---------- */
+	.footer__panel {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+	}
+
+	/* ---------- content: taller than viewport, scrolls through ---------- */
+	.footer__content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		padding-block: 15vh;
 		padding-inline: var(--container-pad);
+		gap: var(--space-7);
+		will-change: transform;
 	}
 
+	/* ---------- colophon row ---------- */
+	.footer__colophon {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--space-2) var(--space-5);
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+
+	.footer__colophon a {
+		color: var(--color-muted);
+		text-decoration: none;
+		transition: color var(--dur-base) ease;
+	}
+
+	.footer__colophon a:hover,
+	.footer__colophon a:focus-visible {
+		color: var(--color-accent);
+	}
+
+	.footer__colophon-links {
+		display: flex;
+		gap: var(--space-3);
+	}
+
+	.footer__colophon-links a::after {
+		content: "/";
+		margin-left: var(--space-3);
+		color: var(--color-wash);
+	}
+
+	.footer__colophon-links a:last-child::after {
+		content: "";
+	}
+
+	.footer__toggle {
+		position: fixed;
+		bottom: var(--space-5);
+		right: var(--space-5);
+		z-index: 10;
+	}
+
+	/* ---------- heading ---------- */
 	.footer__heading {
-		max-width: var(--measure);
 		font-size: var(--text-2xl);
 		font-weight: 500;
 	}
 
+	/* ---------- diamond icon — enlarged focal element ---------- */
+	.footer__icon {
+		width: clamp(5rem, 10vw, 7.5rem);
+		height: clamp(5rem, 10vw, 7.5rem);
+		color: var(--color-accent);
+		will-change: transform;
+	}
+
+	.footer__icon svg {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	/* ---------- contact block ---------- */
+	.footer__contact {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-6);
+	}
+
 	.footer__email {
 		position: relative;
-		display: inline-block;
-		margin-top: var(--space-6);
 		font-size: var(--text-xl);
 		color: var(--color-text);
 		text-decoration: none;
@@ -84,8 +208,7 @@ const socials = [
 		flex-wrap: wrap;
 		gap: var(--space-4);
 		align-items: center;
-		justify-content: space-between;
-		margin-top: var(--space-8);
+		justify-content: center;
 		padding-top: var(--space-5);
 		border-top: 1px solid var(--color-wash);
 	}
@@ -114,48 +237,110 @@ const socials = [
 		color: var(--color-accent);
 	}
 
-	.footer__meta {
+	/* ---------- closing wordmark ---------- */
+	.footer__wordmark {
+		font-family: var(--font-serif);
+		font-size: clamp(2.5rem, 15vw, 12rem);
+		font-weight: 600;
+		line-height: 1;
+		white-space: nowrap;
+		opacity: 0;
+	}
+
+	/* ---------- closing copyright ---------- */
+	.footer__closing {
 		font-family: var(--font-grotesk);
 		font-size: var(--text-label);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
 		color: var(--color-muted);
-	}
-
-	html.js .footer [data-reveal] {
 		opacity: 0;
-		transform: translateY(var(--rise-y));
 	}
 
+	@media (max-width: 768px) {
+		.footer__wordmark {
+			white-space: normal;
+		}
+	}
+
+	/* ---------- prefers-reduced-motion: static fallback ---------- */
 	@media (prefers-reduced-motion: reduce) {
-		html.js .footer [data-reveal] {
+		.footer {
+			height: auto;
+		}
+
+		.footer__panel {
+			position: static;
+			height: auto;
+		}
+
+		.footer__content {
+			padding-block: var(--space-section);
+		}
+
+		.footer__bg {
+			position: absolute;
+		}
+
+		.footer__wordmark {
 			opacity: 1;
-			transform: none;
+		}
+
+		.footer__closing {
+			opacity: 1;
 		}
 	}
 </style>
 
 <script>
-	import { animate, inView, stagger } from "motion";
+	import { scroll } from "motion";
 
-	// Reveal on scroll — one calm fade+rise per section, DESIGN.md §5.
+	const wordmark = document.querySelector<HTMLElement>("[data-wordmark]");
+	const closing = document.querySelector<HTMLElement>(".footer__closing");
+
 	if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-		const section = document.querySelector(".footer");
-		const targets = [...(section?.querySelectorAll("[data-reveal]") ?? [])];
+		const section = document.querySelector<HTMLElement>(".footer");
+		const panel = section?.querySelector<HTMLElement>(".footer__panel");
+		const content = section?.querySelector<HTMLElement>(".footer__content");
+		const icon = section?.querySelector<HTMLElement>(".footer__icon");
+		const bg = section?.querySelector<HTMLElement>(".footer__bg");
 
-		if (section && targets.length) {
-			let fired = false;
-			inView(
-				section,
-				() => {
-					if (fired) return;
-					fired = true;
-					animate(
-						targets,
-						{ opacity: [0, 1], y: [10, 0] },
-						{ duration: 0.6, ease: [0, 0, 0.2, 1], delay: stagger(0.1) },
-					);
+		if (section && panel && content && icon && bg) {
+			const updateHeight = () => {
+				const scrollDistance = Math.max(0, content.scrollHeight - panel.clientHeight);
+				section.style.height = `${100 + (scrollDistance / window.innerHeight) * 100}vh`;
+			};
+
+			updateHeight();
+			window.addEventListener("resize", updateHeight);
+
+			scroll(
+				(progress: number) => {
+					const maxTranslate = content.scrollHeight - panel.clientHeight;
+					content.style.transform = `translateY(${-progress * maxTranslate}px)`;
+
+					icon.style.transform = `rotate(${progress * 180}deg) translateY(${-progress * 10}px)`;
+
+					bg.style.transform = `translateY(${-progress * maxTranslate * 0.25}px)`;
+
+					if (wordmark || closing) {
+						const fadeStart = 0.45;
+						const fadeEnd = 0.95;
+						const opacity = Math.max(0, Math.min(1, (progress - fadeStart) / (fadeEnd - fadeStart)));
+						if (wordmark) wordmark.style.opacity = String(opacity);
+						if (closing) closing.style.opacity = String(opacity);
+					}
 				},
-				{ amount: 0.25 },
+				{
+					target: section,
+					offset: ["start start", "end end"],
+				},
 			);
 		}
+	} else {
+		if (wordmark) wordmark.style.opacity = "1";
+		if (closing) closing.style.opacity = "1";
 	}
+
+
 </script>

@@ -11,7 +11,9 @@
   --ink: #1c1a15; /* primary text, light mode */
   --paper: #ede9e0; /* primary text, dark mode */
   --clay: #b5502e; /* accent — burnt terracotta/rust */
-  --warm-gray: #8a8574; /* muted warm gray */
+  --warm-gray: #8a8574; /* muted warm gray (base) */
+  --warm-gray-500: #6e6858; /* darker warm gray — light mode muted (4.7:1 on bone) */
+  --warm-gray-300: #928d7d; /* lighter warm gray — dark mode muted (4.7:1 on coal) */
 
   /* -------- color — semantic (light default, DESIGN.md §2) -------- */
   --color-bg: var(--bone);
@@ -19,8 +21,9 @@
   --color-text: var(--ink);
   --color-text-dark: var(--paper);
 	--color-accent: var(--clay);
-	--color-muted: var(--warm-gray);
+	--color-muted: var(--warm-gray-500);
 	--color-wash: color-mix(in srgb, var(--color-text) 5%, var(--color-bg)); /* work-list hover wash */
+	--nav-bg: color-mix(in srgb, var(--color-bg) 85%, transparent); /* fixed nav semi-transparent background */
 
   /* -------- typography (DESIGN.md §3) -------- */
   --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
@@ -74,6 +77,7 @@
 :root[data-theme="dark"] {
   --color-bg: var(--coal);
   --color-text: var(--paper);
+  --color-muted: var(--warm-gray-300);
 }
 
 /* -------- dark mode — system preference, before JS sets an explicit theme -------- */
@@ -81,5 +85,6 @@
   :root:not([data-theme="light"]) {
     --color-bg: var(--coal);
     --color-text: var(--paper);
+    --color-muted: var(--warm-gray-300);
   }
 }

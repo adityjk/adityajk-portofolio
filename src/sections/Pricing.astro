@@ -1,0 +1,184 @@
+---
+import { pricing } from "@/data/pricing";
+
+const formatNumber = (n: number) => String(n).padStart(2, "0") + ".";
+---
+
+<section class="pricing" id="pricing">
+	<div class="pricing__container">
+		<h2 class="pricing__label" data-reveal>Pricing</h2>
+		<div class="pricing__grid" data-reveal>
+			{
+				pricing.map((item) => (
+					<a class="pricing__col" href="#contact">
+						<span class="pricing__num">{formatNumber(item.number)}</span>
+						<h3 class="pricing__title">{item.title}</h3>
+						<p class="pricing__price">{item.price}</p>
+						<p class="pricing__desc">{item.description}</p>
+					</a>
+				))
+			}
+		</div>
+		<p class="pricing__closing" data-reveal>
+			Final price depends on scope — let's talk.
+		</p>
+	</div>
+</section>
+
+<style>
+	.pricing {
+		padding-block: var(--space-section);
+	}
+
+	.pricing__container {
+		max-width: var(--container-max);
+		margin-inline: auto;
+		padding-inline: var(--container-pad);
+	}
+
+	.pricing__label {
+		margin-bottom: var(--space-6);
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+
+	.pricing__grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		column-gap: var(--space-6);
+		color: var(--color-text);
+		text-decoration: none;
+	}
+
+	.pricing__col {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding: var(--space-4);
+		margin: calc(-1 * var(--space-4));
+		color: var(--color-text);
+		text-decoration: none;
+		border-radius: 4px;
+		transition: background-color var(--dur-base) ease;
+	}
+
+	.pricing__col:hover,
+	.pricing__col:focus-visible {
+		background-color: var(--color-wash);
+	}
+
+	.pricing__col:focus-visible {
+		outline: var(--line-thickness) solid var(--color-accent);
+		outline-offset: calc(-1 * var(--line-thickness));
+		border-radius: 4px;
+	}
+
+	.pricing__num {
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		color: var(--color-accent);
+	}
+
+	.pricing__title {
+		position: relative;
+		align-self: flex-start;
+		font-size: var(--text-2xl);
+		font-weight: 500;
+	}
+
+	.pricing__title::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		bottom: -0.1em;
+		width: 100%;
+		height: var(--line-thickness);
+		background-color: var(--color-accent);
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform var(--dur-base) ease;
+	}
+
+	.pricing__col:hover .pricing__title::after,
+	.pricing__col:focus-visible .pricing__title::after {
+		transform: scaleX(1);
+	}
+
+	.pricing__price {
+		margin-top: var(--space-1);
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-text);
+		font-weight: 600;
+	}
+
+	.pricing__desc {
+		margin-top: var(--space-2);
+		font-size: var(--text-meta);
+	}
+
+	.pricing__closing {
+		margin-top: var(--space-6);
+		text-align: center;
+		font-family: var(--font-grotesk);
+		font-size: var(--text-label);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+
+	@media (max-width: 768px) {
+		.pricing__grid {
+			grid-template-columns: 1fr;
+			row-gap: var(--space-5);
+		}
+
+		.pricing__col {
+			margin: 0;
+			padding: 0;
+		}
+	}
+
+	html.js .pricing [data-reveal] {
+		opacity: 0;
+		transform: translateY(var(--rise-y));
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html.js .pricing [data-reveal] {
+			opacity: 1;
+			transform: none;
+		}
+	}
+</style>
+
+<script>
+	import { animate, inView, stagger } from "motion";
+
+	if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		const section = document.querySelector(".pricing");
+		const targets = [...(section?.querySelectorAll("[data-reveal]") ?? [])];
+
+		if (section && targets.length) {
+			let fired = false;
+			inView(
+				section,
+				() => {
+					if (fired) return;
+					fired = true;
+					animate(
+						targets,
+						{ opacity: [0, 1], y: [10, 0] },
+						{ duration: 0.6, ease: [0, 0, 0.2, 1], delay: stagger(0.1) },
+					);
+				},
+				{ amount: 0.25 },
+			);
+		}
+	}
+</script>

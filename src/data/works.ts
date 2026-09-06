@@ -12,30 +12,21 @@ export const works: WorkItem[] = [
 	{
 		number: 1,
 		title: "Acme Studio — Brand Site",
-		link: "https://example.com",
+		link: "https://restoran-nusantara-lake.vercel.app/",
 		description:
 			"A clean, content-first marketing site built on WordPress with a custom block theme.",
 		role: "Design & development",
 		year: 2025,
-		image: "/images/project-placeholder.svg",
+		image: "/images/project_1.png",
 	},
 	{
 		number: 2,
 		title: "Field Notes — Editorial",
-		link: "https://example.com",
+		link: "https://prototype-seven-lake.vercel.app/",
 		description:
 			"A quiet, typography-led publication focused on fast, readable long-form.",
 		role: "Front-end development",
 		year: 2024,
-		image: "/images/project-placeholder.svg",
-	},
-	{
-		number: 3,
-		title: "Northwind — Storefront",
-		link: "https://example.com",
-		description:
-			"A lightweight headless storefront with a considered, restrained interface.",
-		year: 2024,
-		image: "/images/project-placeholder.svg",
+		image: "/images/project_2.png",
 	},
 ];
