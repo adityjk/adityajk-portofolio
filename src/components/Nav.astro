@@ -48,8 +48,9 @@ const links = [
 		right: 0;
 		z-index: var(--z-nav);
 		background-color: var(--nav-bg);
-		backdrop-filter: blur(12px);
-		-webkit-backdrop-filter: blur(12px);
+		backdrop-filter: blur(var(--nav-blur)) saturate(150%);
+		-webkit-backdrop-filter: blur(var(--nav-blur)) saturate(150%);
+		border-bottom: 1px solid var(--color-wash);
 	}
 
 	.nav__inner {

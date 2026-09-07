@@ -23,7 +23,8 @@
 	--color-accent: var(--clay);
 	--color-muted: var(--warm-gray-500);
 	--color-wash: color-mix(in srgb, var(--color-text) 5%, var(--color-bg)); /* work-list hover wash */
-	--nav-bg: color-mix(in srgb, var(--color-bg) 85%, transparent); /* fixed nav semi-transparent background */
+	--nav-bg: color-mix(in srgb, var(--color-bg) 55%, transparent); /* fixed nav glass background */
+	--nav-blur: 20px; /* glassmorphism backdrop blur for the nav */
 
   /* -------- typography (DESIGN.md §3) -------- */
   --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
