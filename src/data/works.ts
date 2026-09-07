@@ -11,7 +11,7 @@ export interface WorkItem {
 export const works: WorkItem[] = [
 	{
 		number: 1,
-		title: "Acme Studio — Brand Site",
+		title: "Restoran Nusantara",
 		link: "https://restoran-nusantara-lake.vercel.app/",
 		description:
 			"A clean, content-first marketing site built on WordPress with a custom block theme.",
@@ -21,7 +21,7 @@ export const works: WorkItem[] = [
 	},
 	{
 		number: 2,
-		title: "Field Notes — Editorial",
+		title: "Skyline Bistro",
 		link: "https://prototype-seven-lake.vercel.app/",
 		description:
 			"A quiet, typography-led publication focused on fast, readable long-form.",
