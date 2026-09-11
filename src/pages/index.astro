@@ -10,10 +10,47 @@ import Footer from "@/sections/Footer.astro";
 const title =
   "Aditya Jauhari Khazindar · Independent Web Developer, WordPress Dev";
 const description =
-  "Portfolio of Aditya Jauhari Khazindar, an independent web developer and WordPress developer.";
+  "Portfolio of Aditya Jauhari Khazindar, an independent web developer and WordPress developer based in Semarang, Indonesia. Custom websites, landing pages, and company profile sites.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: "Aditya Jauhari Khazindar",
+      url: "https://adityajauharik.my.id/",
+      description,
+      inLanguage: "en",
+    },
+    {
+      "@type": "Person",
+      name: "Aditya Jauhari Khazindar",
+      url: "https://adityajauharik.my.id/",
+      image: "https://adityajauharik.my.id/images/profile_1.jpeg",
+      email: "mailto:aditkazindar@gmail.com",
+      jobTitle: "Independent Web Developer, WordPress Developer",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Semarang",
+        addressCountry: "ID",
+      },
+      sameAs: [
+        "https://github.com/adityjk",
+        "https://www.linkedin.com/in/aditya-jauhari-kazindar-2b680633a/",
+      ],
+      knowsAbout: ["Web development", "WordPress", "Front-end development"],
+    },
+  ],
+};
 ---
 
 <Base title={title} description={description}>
+  <script
+    slot="head"
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(schema)}
+  />
   <Nav />
   <main>
     <Hero />

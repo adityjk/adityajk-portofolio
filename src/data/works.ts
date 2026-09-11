@@ -17,7 +17,7 @@ export const works: WorkItem[] = [
 			"A clean, content-first marketing site built on WordPress with a custom block theme.",
 		role: "Design & development",
 		year: 2025,
-		image: "/images/project_1.png",
+		image: "/images/project_1.webp",
 	},
 	{
 		number: 2,
@@ -27,6 +27,6 @@ export const works: WorkItem[] = [
 			"A quiet, typography-led publication focused on fast, readable long-form.",
 		role: "Front-end development",
 		year: 2024,
-		image: "/images/project_2.png",
+		image: "/images/project_2.webp",
 	},
 ];
